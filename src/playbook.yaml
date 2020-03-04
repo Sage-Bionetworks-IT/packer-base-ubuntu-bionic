@@ -1,0 +1,34 @@
+- hosts: all
+  become: yes
+
+  tasks:
+    - name: install system updates for centos systems
+      yum: name=* state=present update_cache=yes
+      when: ansible_distribution == "CentOS"
+
+    - name: install system updates for ubuntu systems
+      apt: upgrade=dist update_cache=yes
+      when: ansible_distribution == "Ubuntu"
+
+    - name: install packages
+      package:
+        name:
+          - "ntpdate"
+          - "curl"
+        state: present
+
+    - name: Prep snap classic
+      shell: "[ -x /snap ] || yum install -y epel-release snapd && systemctl enable --now snapd.socket && ln -s /var/lib/snapd/snap /snap || echo ''"
+      register: snap_installed
+
+    # awscli and amazon-ssm-agent are on aws linux2 by default
+    - name: Install awscli and amazon-ssm-agent
+      snap:
+        name:
+          - aws-cli
+          - amazon-ssm-agent
+        classic: yes
+      when: "not snap_installed.stdout"
+
+    - name: Update time
+      shell: "ntpdate -u pool.ntp.org"
