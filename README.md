@@ -6,7 +6,7 @@ The workflow to provision AWS AMI is done using pull requests.
 Just make changes with PRs and when PR is merged a packer build
 will kick off which builds the image and deploys it to AWS.
 
-__Note:__: The image will automatically be named <repo>-<branch> (i.e. packer-myimage-master)
+__Note__: The image will automatically be named gitrepo-branch (i.e. myrepo-master)
 
 ### Requirements
 * Install [packer](https://www.packer.io/intro/getting-started/install.html) (Use this [shell script](install_packer.sh))
@@ -15,7 +15,7 @@ __Note:__: The image will automatically be named <repo>-<branch> (i.e. packer-my
 If you would like to test building an AMI run:
 ```
 cd src
-export IMAGE_NAME=<repo name>
+export IMAGE_NAME=<repo name>-test
 packer build -var AwsProfile=my-aws-account -var AwsRegion=us-east-1 -var IMAGE_NAME=${IMAGE_NAME} template.json
 ```
 
@@ -30,7 +30,7 @@ __Note__: Packer deploys a new AMI to the AWS account specified by the AwsProfil
 To build and deploy a release image just git tag the repo and a packer build will kick off
 which builds the image and deploys it to AWS.
 
-__Note:__: The image will automatically be named <repo>-<tag> (i.e. packer-myimage-v1.0.0)
+__Note__: The image will automatically be named gitrepo-tag (i.e. myrepo-v1.0.0)
 
 ## Contributions
 Contributions are welcome.
