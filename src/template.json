@@ -1,0 +1,62 @@
+{
+  "builders": [
+    {
+      "ami_name": "{{user `ImageName`}}",
+      "ami_users": "{{user `AmiUsers`}}",
+      "force_delete_snapshot": "true",
+      "instance_type": "{{user `InstanceType`}}",
+      "launch_block_device_mappings": [
+        {
+          "delete_on_termination": true,
+          "device_name": "/dev/xvda",
+          "volume_size": "{{user `VolumeSize`}}",
+          "volume_type": "gp2"
+        }
+      ],
+      "profile": "{{user `AwsProfile`}}",
+      "region": "{{user `AwsRegion`}}",
+      "snapshot_users": "{{user `SnapshotUsers`}}",
+      "source_ami": "{{user `SourceImage`}}",
+      "ssh_username": "{{user `SshUsername`}}",
+      "tags": {
+        "BuiltBy": "Packer",
+        "Department": "{{user `Department`}}",
+        "Name": "{{user `ImageName`}}",
+        "OwnerEmail": "{{user `OwnerEmail`}}",
+        "Project": "{{user `Project`}}",
+        "SourceAmiId": "{{ .SourceAMI }}",
+        "SourceAmiName": "{{ .SourceAMIName }}"
+      },
+      "type": "amazon-ebs"
+    }
+  ],
+  "post-processors": [
+    {
+      "output": "manifest.json",
+      "strip_path": true,
+      "type": "manifest"
+    }
+  ],
+  "provisioners": [
+    {
+      "ansible_env_vars": [
+        "ANSIBLE_SSH_ARGS='-o IdentitiesOnly=yes'",
+        "ImageName={{user `ImageName`}}"
+      ],
+      "playbook_file": "playbook.yaml",
+      "type": "ansible"
+    }
+  ],
+  "variables": {
+    "AmiUsers": "563295687221,055273631518,804034162148,237179673806",
+    "Department": "Platform",
+    "ImageName": "{{env `ImageName`}}",
+    "InstanceType": "t3.nano",
+    "OwnerEmail": "khai.do@sagebase.org",
+    "Project": "Infrastructure",
+    "SnapshotUsers": "563295687221,055273631518,804034162148,237179673806",
+    "SourceImage": "ami-07ebfd5b3428b6f4d",
+    "SshUsername": "ubuntu",
+    "VolumeSize": "8"
+  }
+}

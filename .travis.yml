@@ -1,0 +1,31 @@
+dist: bionic
+language: python
+python: 3.7
+cache: pip
+install:
+  - wget https://github.com/Sage-Bionetworks/infra-utils/archive/master.zip -O /tmp/infra-utils.zip
+  - unzip -j -n /tmp/infra-utils.zip -x "infra-utils-master/.gitignore" "infra-utils-master/LICENSE" "infra-utils-master/*.md" "infra-utils-master/aws/*"
+  - ./setup_aws_cli.sh || travis_terminate 1
+  - ./install_packer.sh || travis_terminate 1
+  - pip install pre-commit travis-wait-improved ansible
+before_script:
+  - export IMAGE_NAME="packer-ubuntu-bionic-${TRAVIS_BRANCH}"
+  - export AWS_PROFILE="default"
+  - export AWS_REGION="us-east-1"
+stages:
+  - name: validate
+  - name: deploy
+    if: (type = push) OR (tag =~ ^v)
+jobs:
+  include:
+    - stage: validate
+      script:
+        - pre-commit autoupdate
+        - pre-commit run --all-files
+        - pushd src
+        - echo "ImageName = ${IMAGE_NAME}"
+        - packer validate -var ImageName=${IMAGE_NAME}  template.json
+    - stage: deploy
+      script:
+        - pushd src
+        - travis-wait-improved --timeout 30m packer build -force -var AwsProfile=${AWS_PROFILE} -var AwsRegion=${AWS_REGION} -var ImageName=${IMAGE_NAME} template.json

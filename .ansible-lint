@@ -1,0 +1,11 @@
+exclude_paths:
+  - .
+  - temp
+parseable: true
+quiet: true
+skip_list:
+  - 301
+  - 305
+  - 306
+use_default_rules: true
+verbosity: 1
