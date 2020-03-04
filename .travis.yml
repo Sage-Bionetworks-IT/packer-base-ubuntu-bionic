@@ -9,7 +9,9 @@ install:
   - ./install_packer.sh || travis_terminate 1
   - pip install pre-commit travis-wait-improved ansible
 before_script:
-  - export IMAGE_NAME="packer-ubuntu-bionic-${TRAVIS_BRANCH}"
+  - path=$(pwd)
+  - export REPO_NAME="${path##*/}"
+  - export IMAGE_NAME="${REPO_NAME}-${TRAVIS_BRANCH}"
   - export AWS_PROFILE="default"
   - export AWS_REGION="us-east-1"
 stages:
