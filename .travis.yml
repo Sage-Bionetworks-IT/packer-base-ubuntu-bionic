@@ -16,8 +16,10 @@ before_script:
   - export AWS_REGION="us-east-1"
 stages:
   - name: validate
-  - name: deploy
-    if: (type = push) OR (tag =~ ^v)
+  - name: deploy-branch
+    if: type = push AND branch = master
+  - name: deploy-tag
+    if: tag =~ ^v
 jobs:
   include:
     - stage: validate
@@ -26,8 +28,12 @@ jobs:
         - pre-commit run --all-files
         - pushd src
         - echo "ImageName = ${IMAGE_NAME}"
-        - packer validate -var ImageName=${IMAGE_NAME}  template.json
-    - stage: deploy
+        - packer validate -var ImageName=${IMAGE_NAME} template.json
+    - stage: deploy-branch
       script:
         - pushd src
         - travis-wait-improved --timeout 30m packer build -force -var AwsProfile=${AWS_PROFILE} -var AwsRegion=${AWS_REGION} -var ImageName=${IMAGE_NAME} template.json
+    - stage: deploy-tag
+      script:
+        - pushd src
+        - travis-wait-improved --timeout 30m packer build -var AwsProfile=${AWS_PROFILE} -var AwsRegion=${AWS_REGION} -var ImageName=${IMAGE_NAME} template.json
