@@ -11,17 +11,6 @@ __Note:__: The image will automatically be named <repo>-<branch> (i.e. packer-my
 ### Requirements
 * Install [packer](https://www.packer.io/intro/getting-started/install.html) (Use this [shell script](install_packer.sh))
 
-### Create snapshot AMI
-1. Create new folder (i.e. mkdir -p packer/sagebio/MyAmi-LATEST)
-2. Go into MyAmi-LATEST directory (i.e. cd packer/sagebio/MyAmi-LATEST)
-3. Create a packer configuration file (must be `template.json`).  Set `ImageName` in the `variables`
-section to `MyAmi-LATEST`
-4. Validate packer file (i.e. packer validate template.json)
-5. Create a PR with new files.
-
-__Note__: A snapshot AMI is re-deployed (with a new AMI ID) on every PR merge.  This allows us
-to make updates to this `LATEST` AMI.
-
 ### Manual AMI Build
 If you would like to test building an AMI run:
 ```
