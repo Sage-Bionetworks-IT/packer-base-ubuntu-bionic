@@ -40,8 +40,7 @@
   "provisioners": [
     {
       "ansible_env_vars": [
-        "ANSIBLE_SSH_ARGS='-o IdentitiesOnly=yes'",
-        "ImageName={{user `ImageName`}}"
+        "ANSIBLE_SSH_ARGS='-o IdentitiesOnly=yes'"
       ],
       "playbook_file": "playbook.yaml",
       "type": "ansible"
