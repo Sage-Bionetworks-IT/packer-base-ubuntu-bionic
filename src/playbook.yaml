@@ -15,6 +15,7 @@
         name:
           - "ntpdate"
           - "curl"
+          - "python3-pip"
         state: present
 
     - name: Prep snap classic
@@ -33,5 +34,8 @@
     - name: Update time
       shell: "ntpdate -u pool.ntp.org"
 
-    - name: Make python3 default
+    - name: Make python3 the default python
       shell: "update-alternatives --install /usr/bin/python python /usr/bin/python3 1"
+
+    - name: Make pip3 the default pip
+      shell: "update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 1"
