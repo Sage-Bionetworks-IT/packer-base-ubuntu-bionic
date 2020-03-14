@@ -39,3 +39,9 @@
 
     - name: Make pip3 the default pip
       shell: "update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 1"
+
+    - name: install awsmfa
+      pip:
+        name:
+          - awsmfa==0.2.9
+        executable: pip3
