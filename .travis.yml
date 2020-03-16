@@ -32,8 +32,8 @@ jobs:
     - stage: deploy-branch
       script:
         - pushd src
-        - travis-wait-improved --timeout 30m packer build -force -var AwsProfile=${AWS_PROFILE} -var AwsRegion=${AWS_REGION} -var ImageName=${IMAGE_NAME} template.json
+        - travis-wait-improved --timeout 30m packer build -force -var PACKER_LOG=1 -var AwsProfile=${AWS_PROFILE} -var AwsRegion=${AWS_REGION} -var ImageName=${IMAGE_NAME} template.json
     - stage: deploy-tag
       script:
         - pushd src
-        - travis-wait-improved --timeout 30m packer build -var AwsProfile=${AWS_PROFILE} -var AwsRegion=${AWS_REGION} -var ImageName=${IMAGE_NAME} template.json
+        - travis-wait-improved --timeout 30m packer build -var PACKER_LOG=1 -var AwsProfile=${AWS_PROFILE} -var AwsRegion=${AWS_REGION} -var ImageName=${IMAGE_NAME} template.json
