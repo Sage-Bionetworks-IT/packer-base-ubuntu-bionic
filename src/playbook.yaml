@@ -2,6 +2,8 @@
   become: yes
 
   tasks:
+    - pause:
+        seconds: 30
     - name: install system updates for centos systems
       yum: name=* state=present update_cache=yes
       when: ansible_distribution == "CentOS"
