@@ -31,9 +31,15 @@
     - name: Update time
       shell: "ntpdate -u pool.ntp.org"
 
-    - name: Make pip3 the default pip
+    - name: Make python3 the default python
       alternatives:
         name: python
+        link: /usr/bin/python
+        path: /usr/bin/python3
+
+    - name: Make pip3 the default pip
+      alternatives:
+        name: pip
         link: /usr/bin/pip
         path: /usr/bin/pip3
 
