@@ -130,3 +130,6 @@ dmypy.json
 
 # packer
 src/manifest.json
+
+# jetbrains
+.idea/
