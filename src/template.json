@@ -1,8 +1,8 @@
 {
   "builders": [
     {
+      "ami_groups": "{{user `AmiGroups`}}",
       "ami_name": "{{user `ImageName`}}",
-      "ami_users": "{{user `AmiUsers`}}",
       "force_delete_snapshot": "true",
       "instance_type": "{{user `InstanceType`}}",
       "launch_block_device_mappings": [
@@ -15,7 +15,7 @@
       ],
       "profile": "{{user `AwsProfile`}}",
       "region": "{{user `AwsRegion`}}",
-      "snapshot_users": "{{user `SnapshotUsers`}}",
+      "snapshot_groups": "{{user `SnapshotGroups`}}",
       "source_ami": "{{user `SourceImage`}}",
       "ssh_username": "{{user `SshUsername`}}",
       "tags": {
@@ -50,13 +50,13 @@
     }
   ],
   "variables": {
-    "AmiUsers": "563295687221,055273631518,804034162148,237179673806",
+    "AmiGroups": "all",
     "Department": "Platform",
     "ImageName": "{{env `ImageName`}}",
     "InstanceType": "t3.nano",
     "OwnerEmail": "khai.do@sagebase.org",
     "Project": "Infrastructure",
-    "SnapshotUsers": "563295687221,055273631518,804034162148,237179673806",
+    "SnapshotGroups": "all",
     "SourceImage": "ami-07ebfd5b3428b6f4d",
     "SshUsername": "ubuntu",
     "VolumeSize": "8"
