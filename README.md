@@ -16,7 +16,7 @@ If you would like to test building an AMI run:
 ```
 cd src
 export IMAGE_NAME=<repo name>-test
-packer build -var AwsProfile=my-aws-account -var AwsRegion=us-east-1 -var IMAGE_NAME=${IMAGE_NAME} template.json
+packer build -var AwsProfile=my-aws-account -var AwsRegion=us-east-1 -var ImageName=${IMAGE_NAME} template.json
 ```
 
 Packer will do the following:
