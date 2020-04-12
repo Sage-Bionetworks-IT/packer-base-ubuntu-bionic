@@ -13,6 +13,7 @@
         name:
           - "ntpdate"
           - "curl"
+          - "jq"
           - "python3-pip"
         state: present
 
