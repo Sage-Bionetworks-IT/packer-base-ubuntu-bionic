@@ -32,6 +32,12 @@
         classic: yes
       when: "not snap_installed.stdout"
 
+    - name: Create a symbolic link
+      file:
+        src: /snap/bin/aws
+        dest: /usr/bin/aws
+        state: link
+
     - name: Update time
       shell: "ntpdate -u pool.ntp.org"
 
