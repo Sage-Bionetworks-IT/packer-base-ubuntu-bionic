@@ -14,6 +14,9 @@
           - "ntpdate"
           - "curl"
           - "jq"
+          - "python2.7-minimal"    # for legacy apps
+          - "python-pip"
+          - "python-setuptools"
           - "python3-pip"
         state: present
 
@@ -28,6 +31,12 @@
           - amazon-ssm-agent
         classic: yes
       when: "not snap_installed.stdout"
+
+    - name: Create a symbolic link
+      file:
+        src: /snap/bin/aws
+        dest: /usr/bin/aws
+        state: link
 
     - name: Update time
       shell: "ntpdate -u pool.ntp.org"
@@ -49,3 +58,13 @@
         name:
           - awsmfa==0.2.9
         executable: pip3
+
+    - name: Make aws apps directory
+      file:
+        path: /opt/aws/bin
+        state: directory
+        mode: '0755'
+
+    # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-helper-scripts-reference.html (requires python2.7)
+    - name: install aws cfn helper scripts
+      shell: "sudo /usr/bin/python2.7 /usr/lib/python2.7/dist-packages/easy_install.py --script-dir /opt/aws/bin https://s3.amazonaws.com/cloudformation-examples/aws-cfn-bootstrap-latest.tar.gz"
