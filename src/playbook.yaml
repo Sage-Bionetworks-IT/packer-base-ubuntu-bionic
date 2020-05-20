@@ -18,6 +18,7 @@
           - "python-pip"
           - "python-setuptools"
           - "python3-pip"
+          - "aptdaemon"
         state: present
 
     - name: Prep snap classic
