@@ -84,14 +84,10 @@
             . ~/.profile
           fi
 
-    - name: create ssm-user homedir if not exist
-      file: path=/home/ssm-user state=directory
-
-    - name: set ssm-user shell redirect
+    - name: set systemwide profile shell redirect
       copy:
-        dest: /home/ssm-user/.profile
+        dest: /etc/skel/.profile
         content: |
           if [ "${0}" = "sh" ]; then
             exec bash
           fi
-          cd
