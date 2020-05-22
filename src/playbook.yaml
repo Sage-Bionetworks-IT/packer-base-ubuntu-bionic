@@ -84,6 +84,9 @@
             . ~/.profile
           fi
 
+    - name: create ssm-user homedir if not exist
+      file: path=/home/ssm-user state=directory
+
     - name: set ssm-user shell redirect
       copy:
         dest: /home/ssm-user/.profile
