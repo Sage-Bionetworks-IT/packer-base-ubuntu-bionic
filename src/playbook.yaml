@@ -69,3 +69,26 @@
     # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-helper-scripts-reference.html (requires python2.7)
     - name: install aws cfn helper scripts
       shell: "sudo /usr/bin/python2.7 /usr/lib/python2.7/dist-packages/easy_install.py --script-dir /opt/aws/bin https://s3.amazonaws.com/cloudformation-examples/aws-cfn-bootstrap-latest.tar.gz"
+
+    - name: make default environment for users
+      lineinfile:
+        path: /etc/systemd/system.conf
+        line: DefaultEnvironment="ENV=/etc/profile"
+        state: present
+
+    - name: set systemwide profile source
+      copy:
+        dest: /etc/profile.d/sh.local
+        content: |
+          if [ -r ~/.profile ]; then
+            . ~/.profile
+          fi
+
+    - name: set ssm-user shell redirect
+      copy:
+        dest: /home/ssm-user/.profile
+        content: |
+          if [ "${0}" = "sh" ]; then
+            exec bash
+          fi
+          cd
