@@ -21,24 +21,6 @@
           - "aptdaemon"
         state: present
 
-    - name: Prep snap classic
-      shell: "[ -x /snap ] || yum install -y epel-release snapd && systemctl enable --now snapd.socket && ln -s /var/lib/snapd/snap /snap || echo ''"
-      register: snap_installed
-
-    - name: Install awscli and amazon-ssm-agent
-      snap:
-        name:
-          - aws-cli
-          - amazon-ssm-agent
-        classic: yes
-      when: "not snap_installed.stdout"
-
-    - name: Create a symbolic link
-      file:
-        src: /snap/bin/aws
-        dest: /usr/bin/aws
-        state: link
-
     - name: Update time
       shell: "ntpdate -u pool.ntp.org"
 
@@ -54,11 +36,18 @@
         link: /usr/bin/pip
         path: /usr/bin/pip3
 
-    - name: install awsmfa
-      pip:
+    - name: Install awscli and amazon-ssm-agent
+      snap:
         name:
-          - awsmfa==0.2.9
-        executable: pip3
+          - aws-cli
+          - amazon-ssm-agent
+        classic: yes
+
+    - name: Create a symbolic link
+      file:
+        src: /snap/bin/aws
+        dest: /usr/bin/aws
+        state: link
 
     - name: Make aws apps directory
       file:
