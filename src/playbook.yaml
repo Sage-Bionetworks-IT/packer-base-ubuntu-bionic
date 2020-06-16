@@ -5,10 +5,10 @@
     - pause:
         seconds: 30
 
-    - name: install system updates for ubuntu systems
+    - name: Install system updates for ubuntu systems
       apt: upgrade=dist update_cache=yes
 
-    - name: install packages
+    - name: Install packages
       package:
         name:
           - "ntpdate"
@@ -36,18 +36,24 @@
         link: /usr/bin/pip
         path: /usr/bin/pip3
 
-    - name: Install awscli and amazon-ssm-agent
-      snap:
-        name:
-          - aws-cli
-          - amazon-ssm-agent
-        classic: yes
+    - name: Install aws-cli | Install unzip
+      apt:
+        name: unzip
 
-    - name: Create a symbolic link
-      file:
-        src: /snap/bin/aws
-        dest: /usr/bin/aws
-        state: link
+    - name: Install aws-cli | Download awscli.zip
+      get_url:
+        url: https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip
+        dest: /tmp/awscliv2.zip
+        force: yes
+
+    - name: Install aws-cli | Unarchive awscli.zip
+      unarchive:
+        src: /tmp/awscliv2.zip
+        dest: /tmp
+        remote_src: yes
+
+    - name: Install aws-cli | Run installer
+      shell: "sh /tmp/aws/install -i /usr/local/aws-cli -b /usr/bin"
 
     - name: Make aws apps directory
       file:
@@ -57,4 +63,4 @@
 
     # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-helper-scripts-reference.html (requires python2.7)
     - name: install aws cfn helper scripts
-      shell: "sudo /usr/bin/python2.7 /usr/lib/python2.7/dist-packages/easy_install.py --script-dir /opt/aws/bin https://s3.amazonaws.com/cloudformation-examples/aws-cfn-bootstrap-latest.tar.gz"
+      shell: "/usr/bin/python2.7 /usr/lib/python2.7/dist-packages/easy_install.py --script-dir /opt/aws/bin https://s3.amazonaws.com/cloudformation-examples/aws-cfn-bootstrap-latest.tar.gz"
