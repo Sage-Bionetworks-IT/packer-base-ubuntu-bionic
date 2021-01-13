@@ -24,7 +24,6 @@ jobs:
   include:
     - stage: validate
       script:
-        - pre-commit autoupdate
         - pre-commit run --all-files
         - pushd src
         - echo "ImageName = ${IMAGE_NAME}"
