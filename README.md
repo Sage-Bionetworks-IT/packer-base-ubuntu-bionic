@@ -1,5 +1,10 @@
 # Overview
-Project to build a base ubuntu image and deploy it to AWS
+Project to build a base ubuntu image for Sage Bionetworks science use and deploy it to AWS.
+The image is based on the latest Ubuntu Bionic release available at the point of build and also
+includes the following:
+- Python3 and supporting libs
+- Docker binaries
+- AWS CLI client
 
 ## Workflow
 The workflow to provision AWS AMI is done using pull requests.
