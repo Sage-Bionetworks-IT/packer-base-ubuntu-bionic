@@ -36,6 +36,27 @@
         link: /usr/bin/pip
         path: /usr/bin/pip3
 
+    - name: Add Docker GPG key
+      apt_key: url=https://download.docker.com/linux/ubuntu/gpg
+
+    - name: install pre-docker packages  # this must be installed before adding docker repository
+      shell: "yes | aptdcon --hide-terminal --install 'apt-transport-https'"
+
+    - name: Add Docker APT repository
+      apt_repository:
+        repo: deb [arch=amd64] https://download.docker.com/linux/{{ ansible_distribution|lower }} {{ansible_distribution_release}} stable
+        update_cache: yes
+
+    - name: install packages
+      shell: "yes | aptdcon --hide-terminal --install 'docker-ce docker-ce-cli containerd.io'"
+
+    - name: Docker post-install
+      shell: |
+        if [ -z $(getent group docker) ]; then
+          groupadd docker
+        fi
+        gpasswd -a {{ lookup('env','SSH_USERNAME') }} docker
+
     - name: Install aws-cli | Install unzip
       apt:
         name: unzip
