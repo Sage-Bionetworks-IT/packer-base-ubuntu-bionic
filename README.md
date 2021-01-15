@@ -59,6 +59,9 @@ Travis runs packer which temporarily deploys an EC2 to create an AMI.
 ## Continuous Integration
 We have configured Travis to deploy cloudformation template updates.
 
+## Possible Upcoming changes
+Replace AWS CLI client binaries with docker container version and make system-wide shell alias
+
 ## Issues
 * https://sagebionetworks.jira.com/projects/IT
 
