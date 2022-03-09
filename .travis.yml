@@ -19,7 +19,7 @@ install:
   - pip install pre-commit travis-wait-improved ansible
 before_script:
   - mkdir -p ~/.aws
-  - echo -e "[${AWS_PROFILE}]\nregion=${AWS_REGION}\nsource_profile=ci-user\nrole_arn=${AwsCfServiceRoleArn}" > ~/.aws/config
+  - echo -e "[profile ${AWS_PROFILE}]\nregion=${AWS_REGION}\nsource_profile=ci-user\nrole_arn=${AwsCfServiceRoleArn}" > ~/.aws/config
   - echo -e "[ci-user]\nregion=${AWS_REGION}\naws_access_key_id=${AwsTravisAccessKey}\naws_secret_access_key=${AwsTravisSecretAccessKey}" > ~/.aws/credentials
 stages:
   - name: validate
@@ -37,8 +37,8 @@ jobs:
     - stage: deploy-branch
       script:
         - pushd src
-        - travis-wait-improved --timeout 45m packer build -force -var AwsProfile=${AWS_PROFILE} -var AwsRegion=${AWS_REGION} -var ImageName=${IMAGE_NAME} template.json
+        - travis-wait-improved --timeout 45m packer build -force -var AwsProfile=${AWS_PROFILE} -var ImageName=${IMAGE_NAME} template.json
     - stage: deploy-tag
       script:
         - pushd src
-        - travis-wait-improved --timeout 45m packer build -force -var AwsProfile=${AWS_PROFILE} -var AwsRegion=${AWS_REGION} -var ImageName=${IMAGE_NAME} template.json
+        - travis-wait-improved --timeout 45m packer build -force -var AwsProfile=${AWS_PROFILE} -var ImageName=${IMAGE_NAME} template.json
