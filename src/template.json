@@ -58,7 +58,7 @@
     "OwnerEmail": "khai.do@sagebase.org",
     "Project": "Infrastructure",
     "SnapshotGroups": "all",
-    "SourceImage": "ami-0d0032af1da6905c7",
+    "SourceImage": "ami-005de95e8ff495156",
     "SshUsername": "ubuntu",
     "VolumeSize": "8"
   }
